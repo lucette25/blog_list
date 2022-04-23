@@ -1,0 +1,9 @@
+POST http://localhost:3003/api/blogs
+Content-Type: application/json
+
+{ 
+    "title": "Fullstack",
+    "author": "university",
+    "url": "https://fullstackopen.com/",
+    "likes": 123456
+}
