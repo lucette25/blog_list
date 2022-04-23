@@ -8,7 +8,20 @@ const totalLikes = (blogs) => {
   }
   return blogs.reduce(reducer, 0)
 }
+
+const favoriteBlog = (blogs) => {
+  if(blogs.length===0)
+    return []
+  const reducer = (sum, item) => {
+    return sum> item.likes ? sum : item.likes
+  }
+  const max=blogs.reduce(reducer, 0)
+  const favorite=blogs.find(p => p.likes===max)
+  return favorite
+}
+
 module.exports = {
   dummy,
-  totalLikes
+  totalLikes,
+  favoriteBlog
 }
