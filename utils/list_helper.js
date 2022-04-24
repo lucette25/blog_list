@@ -51,9 +51,41 @@ const mostBlogs = (blogs) => {
   return most
 }
 
+const mostLikes = (blogs) => {
+  if(blogs.length===0)
+    return {}
+
+  const reducer=(groupByAuthor, currentAuthor) => {
+    const temp = groupByAuthor.find(a => a.author === currentAuthor.author)
+    //author never found in table
+    if (!temp) groupByAuthor.push({ ...currentAuthor,
+      likes: currentAuthor.likes
+    })
+    //author already found
+    else temp.likes=temp.likes+currentAuthor.likes
+    return groupByAuthor
+  }
+
+  const dataByAuthor=blogs.reduce(reducer, [])
+
+  const maxblog = (max, item) => {
+    return max> item.likes ? max : item.likes
+  }
+
+  const mlAuthor=dataByAuthor.find(a => a.likes===dataByAuthor.reduce(maxblog,0)
+  )
+  const mostLikesAuthor={
+    'author':mlAuthor.author,
+    'blogs': mlAuthor.likes
+  }
+  return mostLikesAuthor
+}
+
+
 module.exports = {
   dummy,
   totalLikes,
   favoriteBlog,
-  mostBlogs
+  mostBlogs,
+  mostLikes
 }

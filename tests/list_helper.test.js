@@ -107,7 +107,7 @@ describe('Most blogs', () => {
     expect(listHelper.mostBlogs([])).toEqual({})
   })
 
-  test('when list has only one blog is a blog itself', () => {
+  test('when list has only one blog is author of that', () => {
     expect(listHelper.mostBlogs(listWithOneBlog)).toEqual({
       'author':listWithOneBlog[0].author,
       'blogs':1
@@ -118,6 +118,27 @@ describe('Most blogs', () => {
     expect(listHelper.mostBlogs(blogs)).toEqual({
       'author':'Robert C. Martin',
       'blogs':3
+    })
+  })
+})
+
+
+describe('Most likes', () => {
+  test('of empty list empty object', () => {
+    expect(listHelper.mostLikes([])).toEqual({})
+  })
+
+  test('when list has only one blog is the likes of that', () => {
+    expect(listHelper.mostLikes(listWithOneBlog)).toEqual({
+      'author':listWithOneBlog[0].author,
+      'blogs':listWithOneBlog[0].likes
+    })
+  })
+
+  test('of a bigger list is calculated rigth', () => {
+    expect(listHelper.mostLikes(blogs)).toEqual({
+      'author':'Edsger W. Dijkstra',
+      'blogs':17
     })
   })
 })
