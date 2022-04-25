@@ -53,11 +53,10 @@ test('blogs are returned as json', async () => {
 
 
 
-test('there are two notes', async () => {
+test('the unique identifier property of the blog posts is named id', async () => {
   const response = await api.get('/api/blogs')
-  const ids = response.body.map(blog => blog.id)
+  response.body.map(blog => expect(blog.id).toBeDefined())
 
-  expect(ids).toBeDefined()
 }, 100000)
 
 
