@@ -1,9 +1,10 @@
 POST http://localhost:3003/api/blogs
 Content-Type: application/json
 
-{ 
-    "title": "Fullstack252",
-    "author": "university1",
-    "url": "https://fullstackopen.com/",
-    "likes": 1299345620255
-}
+{
+    "title": "First class tests",
+    "author": "Robert C. Martin",
+    "url": "http://blog.cleancoder.com/uncle-bob/2017/05/05/TestDefinitions.html",
+    "likes": 10
+   
+  }
