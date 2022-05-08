@@ -1,10 +1,9 @@
-POST http://localhost:3003/api/blogs
+PUT http://localhost:3003/api/blogs/62745753abcf51eb51af6dfe
 Content-Type: application/json
 
 {
     "title": "First class tests",
-    "author": "Robert C. Martin",
-    "url": "http://blog.cleancoder.com/uncle-bob/2017/05/05/TestDefinitions.html",
-    "likes": 10
+    "author": "Roberto",
+    "url": "http://blog.cleancoder.com/uncle-bob/2017/05/05/TestDefinitions.html"
    
   }
