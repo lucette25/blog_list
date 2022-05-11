@@ -39,20 +39,20 @@ usersRouter.post('/', async (request, response) => {
 
 usersRouter.put('/:id', async (request, response) => {
   const blog = request.body
-  /*const user = new User({
-    username,
-    name,
-    passwordHash
-  })*/
-/**
- {
-       "title": "React patterns1220",
-    "author": "Michael Chan",
-    "url": "https://reactpatterns.com/",
-    "userId":"627798745202df8e2a063a30"
 
-}
- */
+  const username = blog.username
+
+  const existingUser = await User.findOne({ username })
+  if (existingUser) {
+    return response.status(400).json({
+      error: 'username already exist'
+    })
+  }
+
+
+  if (blog.password!==undefined && blog.password.length < 3) {
+    return response.status(400).json({ error: `password (${blog.password}) is shorter than the minimum allowed length (3).` })
+  }
 
   const updatedBlog = await User
     .findByIdAndUpdate(

@@ -1,0 +1,11 @@
+PUT  http://localhost:3003/api/blogs/62795cea874a2a45ffd298b8
+Content-Type: application/json
+Authorization:bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InJvb3QiLCJpZCI6IjYyNzc5ODc0NTIwMmRmOGUyYTA2M2EzMCIsImlhdCI6MTY1MjMwMTk4NiwiZXhwIjoxNjUyMzA1NTg2fQ._P_fcNQQrEXch98QAo2mRpS1yjYytRc4lXnCZ7dJXy4
+
+{
+    "title": "First class tests5",
+    "author": "Roberto",
+    "url": "http://blog.cleancoder.com/uncle-bob/2017/05/05/TestDefinitions.html",
+    "likes":11
+   
+  }

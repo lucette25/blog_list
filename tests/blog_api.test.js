@@ -43,22 +43,21 @@ describe('when there is initially some blogs saved', () => {
   }, 100000)
 })
 
-describe('addition of a new blog', () => {
+describe('addition of a new blog',  () => {
   test('a valid blog can be added', async () => {
-    const user = await helper.usersInDb()
-
-    const newBlog = {
+      const token=await helper.token()
+      const newBlog = {
       title: 'First class tests',
       author: 'Robert C. Martin',
       url: 'http://blog.cleancoder.com/uncle-bob/2017/05/05/TestDefinitions.html',
       likes: 10,
-      userId: user[0].id
     }
 
 
     await api
       .post('/api/blogs')
       .send(newBlog)
+      .set('Authorization', `bearer ${token}`)
       .expect(201)
       .expect('Content-Type', /application\/json/)
 
@@ -70,6 +69,7 @@ describe('addition of a new blog', () => {
     expect(titles).toContain('First class tests')
   })
 
+
   test('blog without likes can be added', async () => {
     const newBlog = {
       title: 'First class tests',
@@ -77,12 +77,10 @@ describe('addition of a new blog', () => {
       url: 'http://blog.cleancoder.com/uncle-bob/2017/05/05/TestDefinitions.html',
     }
 
-    if(newBlog.likes===undefined)
-      newBlog.likes=0
-
-
+    const token=await helper.token()
     await api
       .post('/api/blogs')
+      .set('Authorization', `bearer ${token}`)
       .send(newBlog)
       .expect(201)
       .expect('Content-Type', /application\/json/)
@@ -94,13 +92,17 @@ describe('addition of a new blog', () => {
     expect(titles).toContain('First class tests')
   })
 
-  test('blog without title and url is not added', async () => {
+})
+test('blog without title and url is not added', async () => {
     const newBlog = {
       author: 'Robert C. Martin'
     }
+    const token=await helper.token()
+
     if(  newBlog.title===undefined || newBlog.url===undefined){
       await api
         .post('/api/blogs')
+        .set('Authorization', `bearer ${token}`)
         .send(newBlog)
         .expect(400)
     }
@@ -110,21 +112,38 @@ describe('addition of a new blog', () => {
 
   })
 
-})
-
 describe('deletion of a blog', () => {
   test('succeeds with status code 204 if id is valid', async () => {
+
+    //Adding blog to have user set
+    const newBlog = {
+      title: 'First class tests',
+      author: 'Robert C. Martin',
+      url: 'http://blog.cleancoder.com/uncle-bob/2017/05/05/TestDefinitions.html',
+      likes: 10,
+    }
+
+    const token=await helper.token()
+
+    await api
+      .post('/api/blogs')
+      .send(newBlog)
+      .set('Authorization', `bearer ${token}`)
+      .expect(201)
+
+    //Deleting this blog
     const blogsAtStart = await helper.blogsInDb()
-    const blogToDelete = blogsAtStart[0]
+    const blogToDelete = blogsAtStart[3]
+
 
     await api
       .delete(`/api/blogs/${blogToDelete.id}`)
+      .set('Authorization', `bearer ${token}`)
       .expect(204)
 
     const blogsAtEnd = await helper.blogsInDb()
-    expect(blogsAtEnd).toHaveLength(
-      helper.initialBlogs.length - 1
-    )
+
+    expect(blogsAtEnd).toHaveLength(blogsAtStart.length-1)
 
     const titles = blogsAtEnd.map(r => r.title)
     expect(titles).not.toContain(blogToDelete.title)
@@ -140,9 +159,11 @@ describe('update of a blog', () => {
       ...blogToUpdate,
       likes: 10
     }
+    const token=await helper.token()
 
     await api
       .put(`/api/blogs/${blogToUpdate.id}`)
+      .set('Authorization', `bearer ${token}`)
       .send(newBlog)
       .expect(200)
 
@@ -153,6 +174,10 @@ describe('update of a blog', () => {
     expect(blogsAtEnd[0].likes).toBe(10)
   })
 })
+
+
+
+//User Tests
 
 describe('when there is initially one user in db', () => {
   beforeEach(async () => {
@@ -276,6 +301,26 @@ test('creation fails with proper statuscode and message if password is too short
 
 })
 
+//Login
+test('user login', async () => {
+  const usersAtStart = await helper.usersInDb()
+
+  const newUser = {
+    username: 'root',
+    password: 'sekret'
+  }
+
+  const result = await api
+    .post('/api/login')
+    .send(newUser)
+    .expect(200)
+    .expect('Content-Type', /application\/json/)
+
+    expect(result.body.token).toBeDefined()
+
+  const usersAtEnd = await helper.usersInDb()
+  expect(usersAtEnd).toEqual(usersAtStart)
+})
 
 
 afterAll(() => {
