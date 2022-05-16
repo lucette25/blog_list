@@ -69,14 +69,15 @@ const App = () => {
       await blogService.create(
         newBlog
       )
-      const b=await blogService.getAll()
-      setBlogs(b)
+      await blogService.getAll().then(blogs =>
+        setBlogs( blogs.sort(function (a, b) {
+          return b.likes - a.likes})))
       setNotification({ message: `New blog : ${newBlog.title} by ${newBlog.author}`, type:'info' })
       setTimeout(() => {
         setNotification(null)
       }, 5000)
     }catch (exception) {
-      setNotification({ message: 'Fill all form', type:'alert' })
+      setNotification({ message: 'Fill all form add try reconnexion', type:'alert' })
       setTimeout(() => {
         setNotification(null)
       }, 5000)
@@ -88,8 +89,9 @@ const App = () => {
 
     try {
       await blogService.update(id,newBlog )
-      const b=await blogService.getAll()
-      setBlogs(b)
+      await blogService.getAll().then(blogs =>
+        setBlogs( blogs.sort(function (a, b) {
+          return b.likes - a.likes})))
       setNotification({ message: `Blog : ${newBlog.title} is updated`, type:'info' })
       setTimeout(() => {
         setNotification(null)
@@ -127,7 +129,7 @@ const App = () => {
 
 
   const blogForm = () => (
-    <Togglable buttonLabel='new note' ref={blogFormRef}>
+    <Togglable buttonLabel='New Blog' ref={blogFormRef}>
       <BlogForm addBlog={addBlog} />
     </Togglable>
   )

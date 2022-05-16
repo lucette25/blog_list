@@ -1,4 +1,5 @@
-import useState  from 'react'
+/* eslint-disable indent */
+import { useState }  from 'react'
 
 const Blog = (props) => {
   const [visible, setVisible] = useState(false)
@@ -57,22 +58,26 @@ const Blog = (props) => {
 
     <>
       <div style={blogStyle}>
-        {props.blog.title} {props.blog.author}<button onClick={toggleVisibility}>{buttonText}</button>
-        <div style={showWhenVisible}>
+      <span className='title_author'>
+
+          {props.blog.title} by {props.blog.author}<button onClick={toggleVisibility} >{buttonText}</button>
+        </span>
+
+        <div style={showWhenVisible} className='details'>
           <table>
             <tbody>
               <tr>
-                <td>Url:</td>
-                <td>
+                <td >Url:</td>
+                <td >
                   {props.blog.url}
                 </td>
               </tr>
 
               <tr>
                 <td>Likes:</td>
-                <td>
+                <td className='.likes'>
                   {props.blog.likes}
-                  <button onClick={addLike}>Like</button>
+                  <button onClick={addLike} id='like'>like</button>
                 </td>
 
               </tr>
