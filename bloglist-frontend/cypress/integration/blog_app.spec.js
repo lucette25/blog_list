@@ -96,13 +96,9 @@ describe('Blog app', function() {
         cy.contains('React patterns').parent().contains('like').click()
         cy.contains('React patterns').parent().contains('like').click()
 
-
-
-
         //One like to the first
         cy.contains('Go To Statement Considered Harmful').parent().contains('View').click()
         cy.contains('Go To Statement Considered Harmful').parent().contains('like').click()
-
 
         cy.get('.title_author').eq(0).should('contain', 'React patterns')
         cy.get('.title_author').eq(1).should('contain', 'Go To Statement Considered Harmful')
